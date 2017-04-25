@@ -1,0 +1,23 @@
+<html>
+    <body>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script>
+    $(function() {
+      $("#myform").bind('ajax:complete', function() {
+             // tasks to do 
+             alert(result);
+       });    
+    });
+  </script>
+        <form action='http://127.0.0.1:8080/sendname' method="POST">
+        First name:<br>
+        <input type="text" name="name" value="name here"><br>
+        <input type="submit" value="Submit">
+        </form>
+         <form action='http://127.0.0.1:8080/Login' id='myform' method="GET">
+        login name:<br>
+        <input type="text" name="name" value="name here"><br>
+        <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
