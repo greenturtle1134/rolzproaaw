@@ -111,7 +111,7 @@ app.post('/gethw', function(req, res) {
   console.log(hw+"\n"+classid+"\n"+"\n");
 });
 
-app.listen(8080, function () {
+app.listen((process.env.PORT || 5000), function () {
   console.log('AAW starting on port 8080.');
 })
 
