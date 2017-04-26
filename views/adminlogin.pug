@@ -1,0 +1,23 @@
+html  
+  head
+    title= title
+    link(rel='stylesheet', href='./style.css')
+  body
+    h1= "RolzPro AAW"
+    p(style="font-size:15px") More than likely, you shouldnt be here; this is for ADMINZ only.
+    p(style="font-size:15px") On the off chance that you're actually supposed to be an admin,
+    p(style="font-size:15px") you should know the admin password, which definitely isnt stored in
+    p(style="font-size:15px") the source code of this server on github.com/byteplanes/rolzproaaw.
+    p(style="font-size:15px") But darn, the password is hashed in MD5 :( rip...
+    p(style="font-size:15px") http://www.md5hashgenerator.com/ ;) :P
+    p(style="font-size:15px") At least you know the non hashed password definitely isnt the name
+    p(style="font-size:15px") of the tjcrushes person ;) ikywim. GL!
+
+
+    form(id="adminlogin", method="POST", class="form"  action="/admin")
+        br
+        br
+        p(style="font-size:25px") Admin Access Password:
+        input(type='password', name='pass')
+        br
+        button#submitButton(type='submit') Submit

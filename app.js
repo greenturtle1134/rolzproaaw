@@ -1,13 +1,29 @@
+//(c) 2017 RolzPro.com and Charlie Wu
+//Apache 2.0 License, github.com/byteplanes
+
 var express = require('express')
 var app = express()
 var bodyParser = require('body-parser');
 var fs = require('fs');
-var hw = "";
-var classid = "";
-var getid = "";
+var md5 = require('md5');
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'pug')
+
+app.post('/admin', function (req, res) {  
+    if(md5(req.body.pass)=="7b9a93160be41b430694b7606e18ffdb")
+    {
+        return res.render(
+            'adminconsole',
+            { title: 'RolzPro AAW'})
+    }
+})
+
+app.post('/adminlogin', function (req, res) {  
+    return res.render(
+        'adminlogin',
+        { title: 'RolzPro AAW'})
+})
 
 app.get('/', function (req, res) {  
     return res.render(
@@ -38,12 +54,9 @@ app.get('/info', function (req, res) {
         { title: 'RolzPro AAW'})
 })
 
-app.post('/send', function(req, res) {
-  hw = req.body.hw;
-  classid = req.body.classid;
-  
-  if((typeof parseInt(classid, 10) == 'number')){
-    fs.exists(classid+".txt", function (exists) {
+app.post('/send', function(req, res) {  
+  if((typeof parseInt(req.body.classid, 10) == 'number')){
+    fs.exists(req.body.classid+".txt", function (exists) {
     if (!exists) {
       return res.render(
         'badcid',
@@ -54,11 +67,11 @@ app.post('/send', function(req, res) {
     {
       console.log("wow the classid was right lol");
 
-      fs.readFile(classid+'.txt', function read(err, data) {
+      fs.readFile(req.body.classid+'.txt', function read(err, data) {
          if (err) {
              throw err;
          }
-         fs.writeFile(classid+".txt", getDateTime()+":   "+hw+"\n"+data, function(err) {
+         fs.writeFile(req.body.classid+".txt", getDateTime()+":   "+req.body.hw+"\n"+data, function(err) {
             if(err) {
                  return console.log(err);
             }
@@ -75,14 +88,12 @@ app.post('/send', function(req, res) {
         { title: 'RolzPro AAW',
          errormessage: "ClassID Not A Number"})
   }
-  console.log(hw+"\n"+classid+"\n"+"\n");
+  console.log(req.body.hw+"\n"+req.body.classid+"\n"+"\n");
 });
 
-app.post('/gethw', function(req, res) {
-  getid = req.body.getid;
-  
-  if((typeof parseInt(getid, 10) == 'number')){
-    fs.exists(getid+".txt", function (exists) {
+app.post('/gethw', function(req, res) {  
+  if((typeof parseInt(req.body.getid, 10) == 'number')){
+    fs.exists(req.body.getid+".txt", function (exists) {
     if (!exists) {
       return res.render(
         'badcid',
@@ -93,7 +104,7 @@ app.post('/gethw', function(req, res) {
     {
       console.log("wow the classid was right lol");
 
-      fs.readFile(getid+'.txt', function read(err, data) {
+      fs.readFile(req.body.getid+'.txt', function read(err, data) {
          if (err) {
              throw err;
          }
@@ -108,11 +119,13 @@ app.post('/gethw', function(req, res) {
         { title: 'RolzPro AAW',
          errormessage: "ClassID Not A Number"})
   }
-  console.log(hw+"\n"+classid+"\n"+"\n");
+
 });
 
 app.listen((process.env.PORT || 5000), function () {
-  console.log('AAW starting on port 8080.');
+  console.log('RolzPro AAW starting on port 5000.');
+  console.log('(c) 2017 RolzPro.com and Charlie Wu');
+  console.log('Apache 2.0 License, github.com/byteplanes');
 })
 
 function getDateTime() {
@@ -125,5 +138,5 @@ function getDateTime() {
     month = (month < 10 ? "0" : "") + month;
     var day  = date.getDate();
     day = (day < 10 ? "0" : "") + day;
-    return month + ":" + day + ":" + hour + ":" + min ;
+    return month + "/" + day + "   " + hour + ":" + min ;
 }

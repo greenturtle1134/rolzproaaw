@@ -1,31 +1,35 @@
+//(c) 2017 RolzPro.com and Charlie Wu
+//Apache 2.0 License, github.com/byteplanes
 html  
   head
     title= title
     link(rel='stylesheet', href='./style.css')
   body
+    form(id="disclaimer", method="POST", class="form"  action="/adminlogin")
+        button#submitButton(type='submit') ADMIN LOGIN
     h1= "RolzPro AAW"
     form(id="disclaimer", method="GET", class="form"  action="/disclaimer")
         button#submitButton(type='submit') Disclaimer, Please Read!
     form(id="info", method="GET", class="form"  action="/info")
         button#submitButton(type='submit') Info/Contact
-    h4= "A HW wiki where students can easily check \n the assignments given by teachers, \n like a collaborative school agenda wiki."
-    h4= "To view the most recent HW for a class, \n type the classID below. \n To submit HW for a class, \n see the submit tab on the bottom of this page."
+    p(style="font-size:15px") A HW wiki where students can easily check the assignments given by teachers, like a collaborative school agenda wiki.
+    p(style="font-size:15px") To view the most recent HW for a class, type the classID below. To submit HW for a class, see the submit tab on the bottom of this page.
     form(id="classlist", method="GET", class="form"  action="/classlist")
         button#submitButton(type='submit') TO VIEW CLASSLIST, CLICK HERE
     br
     form(id="gethw", method="POST", class="form"  action="/gethw")
-        h4="Find Assignment:"
-        h4="ClassID: (see below for ID list"
+        p(style="font-size:20px") Find Assignment:
+        p(style="font-size:15px") ClassID: (see below for ID list
         input(type='text', name='getid')
         button#submitButton(type='submit') Find
-    textarea(rows="10", cols="50", name='hwbox')=hwboxmessage
+    textarea(rows="8", cols="50", name='hwbox')=hwboxmessage
     br
     form(id="sendhw", method="POST", class="form"  action="/send")
         br
         br
-        h4="Submit Homework:"
-        textarea(rows="10", cols="50", name='hw')
-        h4="ClassID: (see above for ID list"
+        p(style="font-size:20px") Submit Homework:
+        textarea(rows="8", cols="50", name='hw')
+        p(style="font-size:15px") ClassID: (see above for ID list
         input(type='text', name='classid')
         br
         button#submitButton(type='submit') Submit

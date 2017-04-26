@@ -1,20 +1,23 @@
+//(c) 2017 RolzPro.com and Charlie Wu
+//Apache 2.0 License, github.com/byteplanes
 {
   "name": "nodews",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "engines": {
     "node": "6.10.2",
     "npm": "3.10.10"
   },
-  "description": "rolzpro assignment agenda wiki v: 1.0.1",
+  "description": "rolzpro assignment agenda wiki v: 1.0.2",
   "main": "app.js",
   "scripts": {
-  "start": "node app.js"
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "md5": "^2.2.1",
     "pug": "^2.0.0-beta.12"
   }
 }
