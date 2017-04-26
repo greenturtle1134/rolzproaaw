@@ -71,7 +71,7 @@ app.post('/send', function(req, res) {
          if (err) {
              throw err;
          }
-         fs.writeFile(req.body.classid+".txt", getDateTime()+":   "+req.body.hw+"\n"+data, function(err) {
+         fs.writeFile(req.body.classid+".txt", getDateTime()+":   "+"\n"+req.body.hw+"\n"+"\n"+data, function(err) {
             if(err) {
                  return console.log(err);
             }
