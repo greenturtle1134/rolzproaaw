@@ -1,32 +1,41 @@
 html  
   head
-    title= title
-    link(rel='stylesheet', href='./style.css')
+    title RolzPro AAW
+    link(rel='stylesheet', href='material-components-web.css')
   body
-    h1= "RolzPro AAW"
-    h3= "RolzPro AAW (Assignment Agenda Wiki), is purely a resource"
-    h3= "for students to post and view homework assigned in classes."
-    h3= "It is in no way a cheating resource or place to post answers"
-    h3= "to homework. It is meant to help students who want to know"
-    h3= "the assigned homework, if they were absent or forgot, etc."
-    h3= "RolzPro AAW, Rolzpro.com, and the owner and operators of"
-    h3= "RolzPro do not take any liability or responsibility for any"
-    h3= "thing posted by other students on this site, but will use"
-    h3= "all appropriate enforcement methods to eliminate any and all"
-    h3= "possibility of school policy violations made by site posters."
-    h3= "By using this site, you take all responsibility for the"
-    h3= "resulting consequences of your post, and agree to place no"
-    h3= "liability on RolzPro itself. You also agree to posting the"
-    h3= "correct homework, only as a public service to your fellow peers."
-    h3= "Any violations in policy, determined by the RolzPro admins"
-    h3= "will result in an immediate post removal and infinite ban"
-    h3= "from RolzPro AAW and any other applicable RolzPro services."
-    h3= "Do not post anything trolly, or anything irrelavent to"
-    h3= "the assigned HW from class. Any violations should be reported"
-    h3= "to admin@rolzpro.com. Thank you for using the RolzPro AAW"
-    h3= "service, and please spread the word!"
-    h3= "RolzPro AAW (Assignment Agenda Wiki) is (c) 2017 RolzPro.com"
-    
-    form(id="back", method="GET", class="form"  action="/")
-        br
-        button#submitButton(type='submit') BACK TO MAIN PAGE
+    h1.mdc-typography--display1 RolzPro AAW
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        h1.mdc-card__title.mdc-card__title--large Disclaimer:
+      section.mdc-card__actions
+        pclass#greeting.mdc-typography--body1
+          |RolzPro AAW (Assignment Agenda Wiki), is purely a resource
+          |for students to post and view homework assigned in classes.
+          |It is in no way a cheating resource or place to post answers
+          |to homework. It is meant to help students who want to know
+          |the assigned homework, if they were absent or forgot, etc.
+          |RolzPro AAW, Rolzpro.com, and the owner and operators of
+          |RolzPro do not take any liability or responsibility for any
+          |thing posted by other students on this site, but will use
+          |all appropriate enforcement methods to eliminate any and all
+          |possibility of school policy violations made by site posters.
+          |By using this site, you take all responsibility for the
+          |resulting consequences of your post, and agree to place no
+          |liability on RolzPro itself. You also agree to posting the
+          |correct homework, only as a public service to your fellow peers.
+          |Any violations in policy, determined by the RolzPro admins
+          |will result in an immediate post removal and infinite ban
+          |from RolzPro AAW and any other applicable RolzPro services.
+          |Do not post anything trolly, or anything irrelavent to
+          |the assigned HW from class. Any violations should be reported
+          |to admin@rolzpro.com. Thank you for using the RolzPro AAW
+          |service, and please spread the word!
+          |RolzPro AAW (Assignment Agenda Wiki) is (c) 2017 RolzPro.com
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='./', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button.mdc-button--primary.mdc-button--raised.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |Back to Main Site

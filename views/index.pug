@@ -1,35 +1,101 @@
-//(c) 2017 RolzPro.com and Charlie Wu
-//Apache 2.0 License, github.com/byteplanes
-html  
+html.mdc-typography
   head
-    title= title
-    link(rel='stylesheet', href='./style.css')
-  body
-    form(id="disclaimer", method="POST", class="form"  action="/adminlogin")
-        button#submitButton(type='submit') ADMIN LOGIN
-    h1= "RolzPro AAW"
-    form(id="disclaimer", method="GET", class="form"  action="/disclaimer")
-        button#submitButton(type='submit') Disclaimer, Please Read!
-    form(id="info", method="GET", class="form"  action="/info")
-        button#submitButton(type='submit') Info/Contact
-    p(style="font-size:15px") A HW wiki where students can easily check the assignments given by teachers, like a collaborative school agenda wiki.
-    p(style="font-size:15px") To view the most recent HW for a class, type the classID below. To submit HW for a class, see the submit tab on the bottom of this page.
-    form(id="classlist", method="GET", class="form"  action="/classlist")
-        button#submitButton(type='submit') TO VIEW CLASSLIST, CLICK HERE
-    br
-    form(id="gethw", method="POST", class="form"  action="/gethw")
-        p(style="font-size:20px") Find Assignment:
-        p(style="font-size:15px") ClassID: (see below for ID list
-        input(type='text', name='getid')
-        button#submitButton(type='submit') Find
-    textarea(rows="8", cols="50", name='hwbox')=hwboxmessage
-    br
-    form(id="sendhw", method="POST", class="form"  action="/send")
+    title RolzPro AAW
+    link(rel='stylesheet', href='material-components-web.css')
+  main(class="mdc-typography")
+    h1.mdc-typography--display1 RolzPro AAW
+    h4.mdc-typography--display0 
+        |An assignment agenda wiki where students can easily see class HW.
         br
+        |To view the most recent HW for a class, type the classID below. 
         br
-        p(style="font-size:20px") Submit Homework:
-        textarea(rows="8", cols="50", name='hw')
-        p(style="font-size:15px") ClassID: (see above for ID list
-        input(type='text', name='classid')
+        |To submit HW for a class, see the submit tab on the page bottom.
         br
-        button#submitButton(type='submit') Submit
+        |To see the ClassIDs for your classes, see the ClassID List tab.
+    
+    
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='/disclaimer', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |Disclaimer, Please Read!
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='/info', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |Info/Contact
+    
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='/classlist', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button--raised.mdc-button--accent.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |ClassID List
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        h1.mdc-card__title.mdc-card__title--large Get Homework Assignment:
+      section.mdc-card__actions
+        form#get-form(action='/gethw', method='POST')
+          div
+            .mdc-form-field
+              .mdc-textfield(data-mdc-auto-init='MDCTextfield')
+                input#getid.mdc-textfield__input(type='text', name='getid')
+                label.mdc-textfield__label(for='getid')
+                  | ClassID (See Above)
+          button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+            | Get HW
+
+    .mdc-card.sendcard(style="max-width:500px")
+      section.mdc-card__primary
+        h1.mdc-card__title.mdc-card__title--large Submit Class Homework:
+      section.mdc-card__actions
+            form#send-form(action='/send', method='POST')
+              div
+                .mdc-form-field
+                  .mdc-textfield(data-mdc-auto-init='MDCTextfield')
+                    input#hw.mdc-textfield__input(type='text', name='hw')
+                    label.mdc-textfield__label(for='hw')
+                      | Homework
+                  .mdc-typography--display1 
+                  |            
+                br
+                .mdc-form-field
+                  .mdc-textfield(data-mdc-auto-init='MDCTextfield')
+                    input#classid.mdc-textfield__input(type='text', name='classid')
+                    label.mdc-textfield__label(for='classid')
+                      | ClassID (See Above)
+              button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                | Submit HW
+
+    aside#mdc-dialog-with-list.mdc-dialog(style='visibility:hidden', role='alertdialog', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
+      .mdc-dialog__surface
+        header.mdc-dialog__header
+          h2#mdc-dialog-with-list-label.mdc-dialog__header__title="HW for Class:"+tellclass
+        section()#mdc-dialog-with-list-description.mdc-dialog__body.mdc-dialog__body--scrollable.mdc-typography--heading1
+          pds#mdc-typography--display1=hwboxmessage
+        footer.mdc-dialog__footer
+          button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Got It!
+      .mdc-dialog__backdrop
+
+  script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
+  script.
+    window.mdc.autoInit();
+
+  script.
+    (function() {
+      var swidth = screen.width;
+      var sheight = screen.height;
+      var showhw = !{JSON.stringify(showhw)};
+      if(showhw=='true')
+      {
+        var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-with-list'));
+        dialogScrollable.show();
+      }
+    })();

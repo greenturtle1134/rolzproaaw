@@ -1,20 +1,29 @@
 html  
   head
-    title= title
-    link(rel='stylesheet', href='./style.css')
+    title RolzPro AAW
+    link(rel='stylesheet', href='material-components-web.css')
   body
-    h1= "RolzPro AAW"
-    h3= "For legal info on this site, please see the Disclaimer section."
-    h3= "RolzPro AAW is a wiki where students can post the HW for a class"
-    h3= "for their peers who may not have remembered, missed it, or were absent."
-    h3= "For legal info on this site, please see the Disclaimer section."
-    h3= "To create a new class, please email charthewu@gmail.com for info."
-    h3= "Any other questions should also be directed to charthewu@gmail.com."
-    h3= "Please report any post violations of RolzPro policy directly"
-    h3= "to admin@rolzpro.com. Thank you for using the RolzPro AAW"
-    h3= "service, and please spread the word!"
-    h3= "RolzPro AAW (Assignment Agenda Wiki) is (c) 2017 RolzPro.com"
-    
-    form(id="back", method="GET", class="form"  action="/")
-        br
-        button#submitButton(type='submit') BACK TO MAIN PAGE
+    h1.mdc-typography--display1 RolzPro AAW
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        h1.mdc-card__title.mdc-card__title--large Info and Contact:
+      section.mdc-card__actions
+        pinfo#greeting.mdc-typography--body1
+          |RolzPro AAW
+          |For legal info, please see the Disclaimer section.
+          |RolzPro AAW is a wiki where students can post class HW
+          |for their peers who may not have remembered, missed it, etc.
+          |To create a new class, please email charthewu@gmail.com.
+          |Other questions should be directed to charthewu@gmail.com.
+          |Please report any violations of RolzPro policy directly
+          |to admin@rolzpro.com. Thank you for using the RolzPro AAW
+          |service, and please spread the word!
+          |RolzPro Assignment Agenda Wiki is (c) 2017 RolzPro.com
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='./', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button.mdc-button--primary.mdc-button--raised.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |Back to Main Site

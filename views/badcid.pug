@@ -1,10 +1,22 @@
-html  
+html.mdc-typography
   head
-    title= title
-    link(rel='stylesheet', href='./style.css')
-  body
-    h1= "RolzPro AAW"
-    h2= "Invalid ClassID: "+errormessage
-    form(id="back", method="GET", class="form"  action="/")
-        br
-        button#submitButton(type='submit') BACK TO MAIN PAGE
+    title RolzPro AAW
+    link(rel='stylesheet', href='material-components-web.css')
+  main(class="mdc-typography")
+    h1.mdc-typography--display1 RolzPro AAW
+    
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+          h4.mdc-typography--display0="Invalid ClassID: "+errormessage
+    
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='./', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button.mdc-button--primary.mdc-button--raised.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |Back to Main Site
+
+  script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
+  script.
+    window.mdc.autoInit();

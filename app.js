@@ -6,9 +6,12 @@ var app = express()
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var md5 = require('md5');
+var path = require('path');
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'pug')
+
+app.use(express.static('./views'));
 
 app.post('/admin', function (req, res) {  
     if(md5(req.body.pass)=="7b9a93160be41b430694b7606e18ffdb")
@@ -25,10 +28,10 @@ app.post('/adminlogin', function (req, res) {
         { title: 'RolzPro AAW'})
 })
 
+
 app.get('/', function (req, res) {  
-    return res.render(
-        'index',
-        { title: 'RolzPro AAW', hwboxmessage: 'No class selected yet, to view the HW for a class, type in the correct ClassID above.'})
+    res.render('index.pug');
+    console.log('done');
 })
 
 app.get('/disclaimer', function (req, res) {  
@@ -38,7 +41,7 @@ app.get('/disclaimer', function (req, res) {
 })
 
 app.get('/classlist', function (req, res) { 
-    fs.readFile('classidlist.txt', function read(err, data) {
+    fs.readFile('./classes/classidlist.txt', function read(err, data) {
          if (err) {
              throw err;
          }
@@ -56,7 +59,7 @@ app.get('/info', function (req, res) {
 
 app.post('/send', function(req, res) {  
   if((typeof parseInt(req.body.classid, 10) == 'number')){
-    fs.exists(req.body.classid+".txt", function (exists) {
+    fs.exists("./classes/"+req.body.classid+".txt", function (exists) {
     if (!exists) {
       return res.render(
         'badcid',
@@ -67,11 +70,11 @@ app.post('/send', function(req, res) {
     {
       console.log("wow the classid was right lol");
 
-      fs.readFile(req.body.classid+'.txt', function read(err, data) {
+      fs.readFile("./classes/"+req.body.classid+'.txt', function read(err, data) {
          if (err) {
              throw err;
          }
-         fs.writeFile(req.body.classid+".txt", getDateTime()+":   "+"\n"+req.body.hw+"\n"+"\n"+data, function(err) {
+         fs.writeFile("./classes/"+req.body.classid+".txt", getDateTime()+":   "+"\n"+req.body.hw+"\n"+"\n"+data, function(err) {
             if(err) {
                  return console.log(err);
             }
@@ -93,7 +96,7 @@ app.post('/send', function(req, res) {
 
 app.post('/gethw', function(req, res) {  
   if((typeof parseInt(req.body.getid, 10) == 'number')){
-    fs.exists(req.body.getid+".txt", function (exists) {
+    fs.exists("./classes/"+req.body.getid+".txt", function (exists) {
     if (!exists) {
       return res.render(
         'badcid',
@@ -104,11 +107,11 @@ app.post('/gethw', function(req, res) {
     {
       console.log("wow the classid was right lol");
 
-      fs.readFile(req.body.getid+'.txt', function read(err, data) {
+      fs.readFile("./classes/"+req.body.getid+'.txt', function read(err, data) {
          if (err) {
              throw err;
          }
-         return res.render('./', {title: 'RolzPro AAW', hwboxmessage: data});
+         return res.render('./', {title: 'RolzPro AAW', hwboxmessage: data, tellclass: req.body.getid, showhw:'true'});
          return res.end();
       });
     }
