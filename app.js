@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var md5 = require('md5');
 var path = require('path');
-var sha3 = require('sha3');
+//var sha3 = require('sha3');
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'pug')
