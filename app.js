@@ -15,7 +15,7 @@ app.set('view engine', 'pug')
 app.use(express.static('./views'));
 
 app.post('/admin', function (req, res) {  
-    if((new sha3.SHA3Hash()).update(req.body.pass).digest('hex')=="8b8550f0c7a8e38795d22041400eaac6bca2eab0a226d07ab9fc75f79b9cf336ef700b47a464887f4adea6a1362e243a9d05ed4ea8f01c1e665a97d73a2d008e")
+    if(1==0)//(new sha3.SHA3Hash()).update(req.body.pass).digest('hex')=="8b8550f0c7a8e38795d22041400eaac6bca2eab0a226d07ab9fc75f79b9cf336ef700b47a464887f4adea6a1362e243a9d05ed4ea8f01c1e665a97d73a2d008e")
     {
         return res.render(
             'adminconsole',
