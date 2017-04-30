@@ -3,16 +3,16 @@ html.mdc-typography
     title RolzPro AAW
     link(rel='stylesheet', href='material-components-web.css')
   main(class="mdc-typography")
-    h1.mdc-typography--display1 RolzPro AAW
-    h4.mdc-typography--display0 
-        |An assignment agenda wiki where students can easily see class HW.
-        br
-        |To view the most recent HW for a class, type the classID below. 
-        br
-        |To submit HW for a class, see the submit tab on the page bottom.
-        br
-        |To see the ClassIDs for your classes, see the ClassID List tab.
-    
+
+    img(src='/RolzProLogo2.svg', alt='RolzPro.com Logo v1, (c) 2017 RolzPro.com')
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        divc.mdc-typography--heading2 
+          |An assignment agenda wiki where students can easily see class HW.
+          |To view the most recent HW for a class, type the classID below. 
+          |To submit HW for a class, see the submit tab below.
+          |For the ClassIDs of your classes, see the ClassID List.
     
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__actions
@@ -41,7 +41,6 @@ html.mdc-typography
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__primary
         h1.mdc-card__title.mdc-card__title--large Get Homework Assignment:
-      section.mdc-card__actions
         form#get-form(action='/gethw', method='POST')
           div
             .mdc-form-field
@@ -55,8 +54,7 @@ html.mdc-typography
     .mdc-card.sendcard(style="max-width:500px")
       section.mdc-card__primary
         h1.mdc-card__title.mdc-card__title--large Submit Class Homework:
-      section.mdc-card__actions
-            form#send-form(action='/send', method='POST')
+        form#send-form(action='/send', method='POST')
               div
                 .mdc-form-field
                   .mdc-textfield(data-mdc-auto-init='MDCTextfield')
@@ -83,6 +81,15 @@ html.mdc-typography
         footer.mdc-dialog__footer
           button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Got It!
       .mdc-dialog__backdrop
+
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='/adminlogin', method='POST')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button--accent.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |ADMIN LOGIN
 
   script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
   script.

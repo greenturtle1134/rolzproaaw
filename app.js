@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var md5 = require('md5');
 var path = require('path');
+var sha3 = require('sha3');
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'pug')
@@ -14,11 +15,16 @@ app.set('view engine', 'pug')
 app.use(express.static('./views'));
 
 app.post('/admin', function (req, res) {  
-    if(md5(req.body.pass)=="7b9a93160be41b430694b7606e18ffdb")
+    if((new sha3.SHA3Hash()).update(req.body.pass).digest('hex')=="8b8550f0c7a8e38795d22041400eaac6bca2eab0a226d07ab9fc75f79b9cf336ef700b47a464887f4adea6a1362e243a9d05ed4ea8f01c1e665a97d73a2d008e")
     {
         return res.render(
             'adminconsole',
             { title: 'RolzPro AAW'})
+    }
+    else{
+        if((req.body.pass!='')){
+            return res.render('adminlogin', {wrongpass: 'true'});
+        }
     }
 })
 
@@ -41,7 +47,7 @@ app.get('/disclaimer', function (req, res) {
 })
 
 app.get('/classlist', function (req, res) { 
-    fs.readFile('./classes/classidlist.txt', function read(err, data) {
+    fs.readFile('./classidlist.txt', function read(err, data) {
          if (err) {
              throw err;
          }

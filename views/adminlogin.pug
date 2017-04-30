@@ -1,23 +1,57 @@
-html  
+html.mdc-typography
   head
-    title= title
-    link(rel='stylesheet', href='./style.css')
-  body
-    h1= "RolzPro AAW"
-    p(style="font-size:15px") More than likely, you shouldnt be here; this is for ADMINZ only.
-    p(style="font-size:15px") On the off chance that you're actually supposed to be an admin,
-    p(style="font-size:15px") you should know the admin password, which definitely isnt stored in
-    p(style="font-size:15px") the source code of this server on github.com/byteplanes/rolzproaaw.
-    p(style="font-size:15px") But darn, the password is hashed in MD5 :( rip...
-    p(style="font-size:15px") http://www.md5hashgenerator.com/ ;) :P
-    p(style="font-size:15px") At least you know the non hashed password definitely isnt the name
-    p(style="font-size:15px") of the tjcrushes person ;) ikywim. GL!
+    title RolzPro AAW
+    link(rel='stylesheet', href='material-components-web.css')
+  main(class="mdc-typography")
 
+    img(src='/RolzProLogo2.svg', alt='RolzPro.com Logo v1, (c) 2017 RolzPro.com')
 
-    form(id="adminlogin", method="POST", class="form"  action="/admin")
-        br
-        br
-        p(style="font-size:25px") Admin Access Password:
-        input(type='password', name='pass')
-        br
-        button#submitButton(type='submit') Submit
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        divc.mdc-typography--heading2 
+          |More than likely, you shouldnt be here; this is for ADMINZ only.
+    
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        h1.mdc-card__title.mdc-card__title--large Authorization Code:
+        form#get-form(action='/admin', method='POST')
+          div
+            .mdc-form-field
+              .mdc-textfield(data-mdc-auto-init='MDCTextfield')
+                input#getid.mdc-textfield__input(type='password', name='pass')
+                label.mdc-textfield__label(for='getid')
+                  | Password
+          button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+            | Login
+
+    aside#mdc-dialog-with-list.mdc-dialog(style='visibility:hidden', role='alertdialog', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
+      .mdc-dialog__surface
+        header.mdc-dialog__header
+          h2#mdc-dialog-with-list-label.mdc-dialog__header__title="WRONG PASSWORD GET OUT YOU HACKER"
+        footer.mdc-dialog__footer
+          button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Got It!
+      .mdc-dialog__backdrop
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='./', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button.mdc-button--primary.mdc-button--raised.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |Back to Main Site
+
+  script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
+  script.
+    window.mdc.autoInit();
+
+  script.
+    (function() {
+      var swidth = screen.width;
+      var sheight = screen.height;
+      var wrongpass = !{JSON.stringify(wrongpass)};
+      if(wrongpass=='true')
+      {
+        var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-with-list'));
+        dialogScrollable.show();
+      }
+    })();

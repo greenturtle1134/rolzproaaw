@@ -12,6 +12,12 @@ pclass{
     word-wrap: break-word
 }
 
+divc{
+    width: 500px;
+    word-break: normal;
+    white-space: normal;
+}
+
 pinfo{
     white-space: pre;
     overflow-y: scroll;
