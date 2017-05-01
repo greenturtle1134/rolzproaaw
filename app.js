@@ -6,8 +6,6 @@ var app = express()
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var md5 = require('md5');
-var path = require('path');
-//var sha3 = require('sha3');
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'pug')
@@ -15,7 +13,7 @@ app.set('view engine', 'pug')
 app.use(express.static('./views'));
 
 app.post('/admin', function (req, res) {  
-    if(1==0)//(new sha3.SHA3Hash()).update(req.body.pass).digest('hex')=="8b8550f0c7a8e38795d22041400eaac6bca2eab0a226d07ab9fc75f79b9cf336ef700b47a464887f4adea6a1362e243a9d05ed4ea8f01c1e665a97d73a2d008e")
+    if(md5(md5(req.body.pass)+md5(req.body.pass+"1b2e3t4a5r6o7l8z9p0"))=="f7b2ee1dca92c8a591e588c1fedc8179")
     {
         return res.render(
             'adminconsole',
@@ -149,3 +147,50 @@ function getDateTime() {
     day = (day < 10 ? "0" : "") + day;
     return month + "/" + day + "   " + hour + ":" + min ;
 }
+
+
+
+app.post('/updatefile', function(req, res) {  
+    fs.exists(req.body.sendpath, function (exists) {
+      console.log("wow the classid was right lol");
+         fs.writeFile(req.body.sendpath, req.body.newfile, function(err) {
+            if(err) {
+                 return console.log(err);
+            }
+            console.log("The file was saved!");
+         });
+      return res.render('adminconsole', { title: 'RolzPro AAW'});
+      return res.end();
+  });
+});
+
+app.post('/getfile', function(req, res) {  
+  if(1==1){
+    fs.exists(req.body.getpath, function (exists) {
+    if (!exists) {
+      return res.render(
+        'badcid',
+        { title: 'RolzPro AAW',
+         errormessage: "Not an Actual Class, to create a class see contact section"})
+    }
+    else
+    {
+      console.log("wow the classid was right lol");
+
+      fs.readFile(req.body.getpath, function read(err, data) {
+         if (err) {
+             throw err;
+         }
+         return res.render('adminconsole', {title: 'RolzPro AAW', filecontents: data});
+         return res.end();
+      });
+    }
+  });
+}else{
+        return res.render(
+        'badcid',
+        { title: 'RolzPro AAW',
+         errormessage: "ClassID Not A Number"})
+  }
+
+});

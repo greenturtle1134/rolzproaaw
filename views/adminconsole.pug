@@ -1,7 +1,51 @@
-html  
+html.mdc-typography
   head
-    title= title
-    link(rel='stylesheet', href='./style.css')
-  body
-    h1= "RolzPro AAW: ADMIN CONSOLE"
-    p(style="font-size:15px") HELLO.
+    title RolzPro AAW
+    link(rel='stylesheet', href='material-components-web.css')
+  main(class="mdc-typography")
+
+    img(src='/RolzProLogo2.svg', alt='RolzPro.com Logo v1, (c) 2017 RolzPro.com')
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        divc.mdc-typography--heading2 
+          |WELCOME TO THE NEW AND IMPROVED ADMIN CONSOLE, ADMINS!!!
+    
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        h1.mdc-card__title.mdc-card__title--large File Directory + Name:
+          
+        form#get-form(action='/getfile', method='POST')
+          div
+            .mdc-form-field
+              .mdc-textfield(data-mdc-auto-init='MDCTextfield')
+                input#getid.mdc-textfield__input(type='text', name='getpath')
+                label.mdc-textfield__label(for='getid')
+                  | Get Path
+          button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+            | Get File Contents
+        form#get-form(action='/updatefile', method='POST')
+          div
+            .mdc-form-field
+              .mdc-textfield(data-mdc-auto-init='MDCTextfield')
+                input#getid.mdc-textfield__input(type='text', name='sendpath')
+                label.mdc-textfield__label(for='getid')
+                  | Send Path
+          button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+            | Send File Contents
+          section#demo-textfield-multiline-wrapper(style='overflow:hidden;')
+            .mdc-textfield.mdc-textfield--multiline
+              textarea(name='newfile')#multi-line.mdc-textfield__input(rows='8', cols='40')=filecontents
+    
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='./', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button.mdc-button--primary.mdc-button--raised.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |Back to Main Site
+
+  script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
+  script.
+    window.mdc.autoInit();
