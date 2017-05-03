@@ -4,6 +4,12 @@
  License: Apache-2.0
 */
 
+.center {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
 pclass{
     white-space: pre;
     overflow-y: scroll;

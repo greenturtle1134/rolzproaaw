@@ -1,0 +1,66 @@
+html.mdc-typography
+  head
+    title RolzPro AAW
+    link(rel='stylesheet', href='material-components-web.css')
+  main(class="mdc-typography")
+
+    img(src='/RolzProLogo2.svg', alt='RolzPro.com Logo v1, (c) 2017 RolzPro.com')
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        divc.mdc-typography--heading2 
+          |Welcome to RolzPro AAW!
+          |Login below to see the latest hw for any of your classes.
+          |If you don't have an account, see below to create one.
+    
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        form#get-form(action='/confirmlogin', method='POST')
+          div
+            h1.mdc-card__title.mdc-card__title--large Username:
+            .mdc-form-field
+              .mdc-textfield(data-mdc-auto-init='MDCTextfield')
+                input#getid.mdc-textfield__input(type='text', name='username')
+                label.mdc-textfield__label(for='getid')
+                  | Username
+          div
+            h1.mdc-card__title.mdc-card__title--large Password:
+            .mdc-form-field
+              .mdc-textfield(data-mdc-auto-init='MDCTextfield')
+                input#getid.mdc-textfield__input(type='password', name='password')
+                label.mdc-textfield__label(for='getid')
+                  | Password
+          button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+            | Login
+
+    aside#mdc-dialog-with-list.mdc-dialog(style='visibility:hidden', role='alertdialog', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
+      .mdc-dialog__surface
+        header.mdc-dialog__header
+          h2#mdc-dialog-with-list-label.mdc-dialog__header__title=loginerrormessage
+        footer.mdc-dialog__footer
+          button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Got It!
+      .mdc-dialog__backdrop
+
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__actions
+        form#get-form(action='/createaccount', method='GET')
+          div
+            .mdc-form-field
+              button.mdc-button.mdc-button.mdc-button--primary.mdc-button--raised.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+                |Create Account
+
+  script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
+  script.
+    window.mdc.autoInit();
+
+  script.
+    (function() {
+      var swidth = screen.width;
+      var sheight = screen.height;
+      var wrongpass = !{JSON.stringify(wrongpass)};
+      if(wrongpass=='true')
+      {
+        var dialogScrollable = new mdc.dialog.MDCDialog(document.querySelector('#mdc-dialog-with-list'));
+        dialogScrollable.show();
+      }
+    })();

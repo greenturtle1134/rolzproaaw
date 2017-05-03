@@ -3,10 +3,11 @@ html.mdc-typography
     title RolzPro AAW
     link(rel='stylesheet', href='material-components-web.css')
   main(class="mdc-typography")
-
     img(src='/RolzProLogo2.svg', alt='RolzPro.com Logo v1, (c) 2017 RolzPro.com')
 
-
+    .mdc-card.getcard(style="max-width:500px")
+        divc.mdc-typography--title="Hello, "+username+".   "
+        a(href='/logout', target='_top') Logout
 
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__primary
@@ -93,6 +94,7 @@ html.mdc-typography
             .mdc-form-field
               button.mdc-button.mdc-button--accent.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
                 |ADMIN LOGIN
+
 
   script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
   script.
