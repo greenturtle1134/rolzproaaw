@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var md5 = require('md5');
 var cookieParser = require('cookie-parser')
+var SHA512 = require("crypto-js/sha512");
+
 
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.set('view engine', 'pug')
@@ -61,11 +63,21 @@ app.post('/confirmlogin', function (req, res) {
               if (err) {
                   throw err;
               }
+              if(SHA512(req.body.password).toString()==data)
+              {
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"LOGIN SUCCESS by: "+req.body.username, function(err) {}); });
+                res.cookie('username', req.body.username, { expires: 0, httpOnly: true });
+                res.cookie('password', SHA512(req.body.password).toString(), { expires: 0, httpOnly: true });
+                return res.render('index', {title: 'RolzPro AAW', username: req.body.username});
+                return res.end();
+              }
+              else
+              {
               if(md5(req.body.password)==data)
               {
     fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"LOGIN SUCCESS by: "+req.body.username, function(err) {}); });
                 res.cookie('username', req.body.username, { expires: 0, httpOnly: true });
-                res.cookie('password', md5(req.body.password), { expires: 0, httpOnly: true });
+                res.cookie('password', md5(req.body.password).toString(), { expires: 0, httpOnly: true });
                 return res.render('index', {title: 'RolzPro AAW', username: req.body.username});
                 return res.end();
               }
@@ -74,6 +86,7 @@ app.post('/confirmlogin', function (req, res) {
     fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"BAD PASSWORD by: "+req.body.username, function(err) {}); });
                 return res.render(
                   'login', {wrongpass: 'true', loginerrormessage: 'Wrong password. Stawp haxoring!'})
+              }
               }
             });
           }
@@ -93,7 +106,7 @@ app.post('/confirmcreate', function (req, res) {
           fs.exists("./users/"+req.body.username+".txt", function (exists) {
           if (!exists) {
              fs.closeSync(fs.openSync("./users/"+req.body.username+".txt", 'w'));
-             fs.writeFile("./users/"+req.body.username+".txt", md5(req.body.password), function(err) {
+             fs.writeFile("./users/"+req.body.username+".txt", SHA512(req.body.password), function(err) {
               if(err) {
               }
     fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"CREATE SUCCESS by: "+req.body.username, function(err) {}); });
