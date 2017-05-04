@@ -8,30 +8,20 @@ html.mdc-typography
 
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__primary
-        divc.mdc-typography--heading2 
-          |Welcome to RolzPro AAW!
-          |Login below to see the latest HW for any of your classes.
-          |If you don't have an account, see below to create one.
+        divc.mdc-typography--heading2
+          |In light of recent troubles experienced by some of our users, New and Existing RolzPro AAW accounts need to be updated with a working contact email, which will allow us to easily reset your password, assist you with user account problems, and more! Please input an acceptable email, or any other type of contact info, down below, to update your RolzPro AAW account to the latest standards.
     
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__primary
-        form#get-form(action='/confirmlogin', method='POST')
+        form#get-form(action='/confirmemail', method='POST')
           div
-            h1.mdc-card__title.mdc-card__title--large Username:
             .mdc-form-field
               .mdc-textfield(data-mdc-auto-init='MDCTextfield')
-                input#getid.mdc-textfield__input(type='text', name='username')
+                input#getid.mdc-textfield__input(type='text', name='email')
                 label.mdc-textfield__label(for='getid')
-                  | Username
-          div
-            h1.mdc-card__title.mdc-card__title--large Password:
-            .mdc-form-field
-              .mdc-textfield(data-mdc-auto-init='MDCTextfield')
-                input#getid.mdc-textfield__input(type='password', name='password')
-                label.mdc-textfield__label(for='getid')
-                  | Password
+                  | Contact Info/Email
           button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
-            | Login
+            | Submit and Continue to RolzPro AAW
 
     aside#mdc-dialog-with-list.mdc-dialog(style='visibility:hidden', role='alertdialog', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
       .mdc-dialog__surface
@@ -40,19 +30,11 @@ html.mdc-typography
         footer.mdc-dialog__footer
           button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Got It!
       .mdc-dialog__backdrop
-
-    .mdc-card.getcard(style="max-width:500px")
-      section.mdc-card__actions
-        form#get-form(action='/createaccount', method='GET')
-          div
-            .mdc-form-field
-              button.mdc-button.mdc-button.mdc-button--primary.mdc-button--raised.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
-                |Create Account
     
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__primary
         divc.mdc-typography--heading2 
-          |If you forgot your password, or are having any trouble with your account, please contact RolzPro technical support directly at cwu159@gmail.com. Thanks!
+          |For more info regarding our new 'Users FIRST' policy, please contact RolzPro technical support directly at cwu159@gmail.com.
 
   script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
   script.
