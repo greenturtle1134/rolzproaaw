@@ -16,27 +16,165 @@ app.set('view engine', 'pug')
 app.use(express.static('./views'));
 app.use(cookieParser());
 
+function goodcookie(ccheck, username, password, redirectto, res){
+    if(username=="logged out"&&password=="logged out")
+    {
+      fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"RELOG PLS by: "+username, function(err) {}); });
+      res.render('login', {wrongpass: 'true', loginerrormessage: 'Please Re-enter your Username and Password.'});
+      res.end();
+      return true;
+    }
+    if(username!=""&&username!=null)
+    {
+          fs.exists("./users/"+username+".txt", function (exists) {
+          if (!exists) {
+            res.render(
+              'login');
+            return true;
+          }
+          else
+          {
+            fs.readFile("./users/"+username+".txt", function read(err, data) {
+              if (err) {
+                  throw err;
+              }
+              if(password==data)
+              {
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"RETURN SUCCESS by: "+username, function(err) {}); });
+                
+                fs.exists("./emails/"+username+".txt", function (exists) {
+                  if (!exists&&ccheck==true) {
+                    res.render(
+                      'askemail');
+                    return true;
+                  }
+                  else
+                  {
+                      if (password.length<=32&&ccheck==true) {
+                        res.render(
+                          'changelegacypass');
+                        return true;
+                      }
+                      else{
+                        if(redirectto==""){
+                            return false;
+                          }
+                          else{
+                            res.render(redirectto, {title: 'RolzPro AAW', username: username});
+                            return false;
+                          }
+                      }
+                  }
+                });
+              }
+              else
+              {
+                res.render('login');
+                res.end();
+                return true;
+              }
+            });
+          }
+          });
+    }
+    else
+    {
+          res.render('login');
+          res.end();
+          return true;
+          console.log('done');
+    }
+}
+//need to fix a headers error :/
+app.post('/confirmfromlegacypass', function (req, res) {
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"LEGACY TO NEW ATTEMPT by: "+req.cookies.username, function(err) {}); });
+    if(req.body.pass!=""&&req.body.pass!=null)
+    {
+          fs.exists("./users/"+req.cookies.username+".txt", function (exists) {
+          if (exists) {
+             fs.writeFile("./users/"+req.cookies.username+".txt", SHA512(req.body.pass), function(err) {
+              if(err) {
+              }
+             fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"LEGACY TO NEW SUCCESS by: "+req.cookies.username, function(err) {}); });});
+             goodcookie(false, req.cookies.username, req.cookies.password, 'index', res)
+          }
+          else{
+              fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"STRANGE L TO N ERROR by: "+req.cookies.username, function(err) {}); });
+              goodcookie(false, req.cookies.username, req.cookies.password, 'index', res)
+          }
+        });
+    }
+    else
+    {
+        return res.render(
+          'changelegacypass', {wrongpass: 'true', loginerrormessage: 'Please enter a valid password (not blank)'})
+    }
+})
+
+app.post('/skipemail', function (req, res) {
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"EMAIL SKIP by: "+req.cookies.username, function(err) {}); });
+          fs.exists("./emails/"+req.cookies.username+".txt", function (exists) {
+          if (!exists) {
+             fs.closeSync(fs.openSync("./emails/"+req.cookies.username+".txt", 'w'));
+             fs.writeFile("./emails/"+req.cookies.username+".txt", "DECLINED", function(err) {
+              if(err) {
+              }
+             fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"SKIP SUCCESS by: "+req.cookies.username, function(err) {}); });});
+             goodcookie(true, req.cookies.username, req.cookies.password, 'index', res)
+          }
+          else{
+              fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"STRANGE EMAIL SKIP by: "+req.cookies.username, function(err) {}); });
+              goodcookie(true, req.cookies.username, req.cookies.password, 'index', res)
+          }
+        });
+})
+
+app.post('/confirmemail', function (req, res) {
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"EMAIL ATTEMPT by: "+req.cookies.username, function(err) {}); });
+    if(req.body.email!=""&&req.body.email!=null)
+    {
+          fs.exists("./emails/"+req.cookies.username+".txt", function (exists) {
+          if (!exists) {
+             fs.closeSync(fs.openSync("./emails/"+req.cookies.username+".txt", 'w'));
+             fs.writeFile("./emails/"+req.cookies.username+".txt", req.body.email, function(err) {
+              if(err) {
+              }
+             fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"EMAIL SUCCESS by: "+req.cookies.username, function(err) {}); });});
+             goodcookie(true, req.cookies.username, req.cookies.password, 'index', res)
+          }
+          else{
+              fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"STRANGE EMAIL ERROR by: "+req.cookies.username, function(err) {}); });
+              goodcookie(true, req.cookies.username, req.cookies.password, 'index', res)
+          }
+        });
+    }
+    else
+    {
+        return res.render(
+          'askemail', {wrongpass: 'true', loginerrormessage: 'Please enter a valid email/other contact method. A confirmation for your account will be sent.'})
+
+    }
+})
+
 app.post('/admin', function (req, res) { 
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"ADMIN ATTEMPT by: "+req.cookies.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"ADMIN ATTEMPT by: "+req.cookies.username, function(err) {}); });
     if(md5(md5(req.body.pass))=="3566808b216dd654e693c7a7f48bc6f5")
     {
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"ADMIN SUCCESS by: "+req.cookies.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"ADMIN SUCCESS by: "+req.cookies.username, function(err) {}); });
         return res.render(
             'adminconsole',
             { title: 'RolzPro AAW'})
     }
     else{
         if((req.body.pass!='')){
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"ADMIN FAILURE by: "+req.cookies.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"ADMIN FAILURE by: "+req.cookies.username, function(err) {}); });
             return res.render('adminlogin', {wrongpass: 'true'});
         }
     }
 })
 
 app.post('/adminlogin', function (req, res) {  
-    return res.render(
-        'adminlogin',
-        { title: 'RolzPro AAW'})
+    if(goodcookie(true, req.cookies.username, req.cookies.password, 'adminlogin', res)!=false){return;}
 })
 
 app.get('/logout', function (req, res) {  
@@ -45,11 +183,10 @@ app.get('/logout', function (req, res) {
     return res.render(
         'login',
         { title: 'RolzPro AAW'});
-    return res.end();
 })
 
 app.post('/confirmlogin', function (req, res) {
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"LOGIN ATTEMPT by: "+req.body.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"LOGIN ATTEMPT by: "+req.body.username, function(err) {}); });
     if(req.body.username!=""&&req.body.username!=null)
     {
           fs.exists("./users/"+req.body.username+".txt", function (exists) {
@@ -65,7 +202,7 @@ app.post('/confirmlogin', function (req, res) {
               }
               if(SHA512(req.body.password).toString()==data)
               {
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"LOGIN SUCCESS by: "+req.body.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"LOGIN SUCCESS by: "+req.body.username, function(err) {}); });
                 res.cookie('username', req.body.username, { expires: 0, httpOnly: true });
                 res.cookie('password', SHA512(req.body.password).toString(), { expires: 0, httpOnly: true });
                 return res.render('index', {title: 'RolzPro AAW', username: req.body.username});
@@ -75,7 +212,7 @@ app.post('/confirmlogin', function (req, res) {
               {
               if(md5(req.body.password)==data)
               {
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"LOGIN SUCCESS by: "+req.body.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"LOGIN SUCCESS by: "+req.body.username, function(err) {}); });
                 res.cookie('username', req.body.username, { expires: 0, httpOnly: true });
                 res.cookie('password', md5(req.body.password).toString(), { expires: 0, httpOnly: true });
                 return res.render('index', {title: 'RolzPro AAW', username: req.body.username});
@@ -83,7 +220,7 @@ app.post('/confirmlogin', function (req, res) {
               }
               else
               {
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"BAD PASSWORD by: "+req.body.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"BAD PASSWORD by: "+req.body.username, function(err) {}); });
                 return res.render(
                   'login', {wrongpass: 'true', loginerrormessage: 'Wrong password. Stawp haxoring!'})
               }
@@ -100,7 +237,7 @@ app.post('/confirmlogin', function (req, res) {
 })
 
 app.post('/confirmcreate', function (req, res) {
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"CREATE ATTEMPT by: "+req.body.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"CREATE ATTEMPT by: "+req.body.username, function(err) {}); });
     if(req.body.username!=""&&req.body.username!=null&&req.body.password!=""&&req.body.password!=null)
     {
           fs.exists("./users/"+req.body.username+".txt", function (exists) {
@@ -109,7 +246,7 @@ app.post('/confirmcreate', function (req, res) {
              fs.writeFile("./users/"+req.body.username+".txt", SHA512(req.body.password), function(err) {
               if(err) {
               }
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"CREATE SUCCESS by: "+req.body.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"CREATE SUCCESS by: "+req.body.username, function(err) {}); });
               res.render('login', {wrongpass: 'true', loginerrormessage: 'Thanks for registering! Sign in with your new credentials!'});
               console.log('done');
               console.log("The file was saved!");
@@ -130,43 +267,8 @@ app.post('/confirmcreate', function (req, res) {
 })
 
 app.get('/', function (req, res) {
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"RETURN ATTEMPT by: "+req.cookies.username, function(err) {}); });
-    if(req.cookies.username!=""&&req.cookies.username!=null)
-    {
-      console.log("got far 1");
-          fs.exists("./users/"+req.cookies.username+".txt", function (exists) {
-          if (!exists) {
-            return res.render(
-              'login')
-          }
-          else
-          {
-                  console.log("got far 2");
-            fs.readFile("./users/"+req.cookies.username+".txt", function read(err, data) {
-              if (err) {
-                  throw err;
-              }
-              if(req.cookies.password==data)
-              {
-                console.log("got far 3");
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"RETURN SUCCESS by: "+req.cookies.username, function(err) {}); });
-                return res.render('index', {title: 'RolzPro AAW', username: req.cookies.username});
-                return res.end();
-              }
-              else
-              {
-                res.render('login');
-                console.log('done');
-              }
-            });
-          }
-          });
-    }
-    else
-    {
-          res.render('login');
-          console.log('done');
-    }
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"RETURN ATTEMPT by: "+req.cookies.username, function(err) {}); });
+    if(goodcookie(true, req.cookies.username, req.cookies.password, 'index', res)!=false){return;}
 })
 
 app.get('/createaccount', function (req, res) {
@@ -175,30 +277,30 @@ app.get('/createaccount', function (req, res) {
 })
 
 app.get('/disclaimer', function (req, res) {  
-    return res.render(
-        'disclaimer',
-        { title: 'RolzPro AAW'})
+    if(goodcookie(true, req.cookies.username, req.cookies.password, 'disclaimer', res)!=false){
+      console.log("one point five");
+      return;
+    }
 })
 
 app.get('/classlist', function (req, res) { 
-    fs.readFile('./classidlist.txt', function read(err, data) {
+      console.log("two");
+      fs.readFile('./classidlist.txt', function read(err, data) {
          if (err) {
              throw err;
          }
         return res.render(
             'classlist',
             { title: 'RolzPro AAW', listmessage: data})
-      }); 
+      });
 })
 
 app.get('/info', function (req, res) {  
-    return res.render(
-        'info',
-        { title: 'RolzPro AAW'})
+    if(goodcookie(true, req.cookies.username, req.cookies.password, 'info', res)!=false){return;}
 })
 
 app.post('/send', function(req, res) {  
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"SEND ATTEMPT by: "+req.cookies.username, function(err) {}); });
+  fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"SEND ATTEMPT by: "+req.cookies.username, function(err) {}); });
   if((typeof parseInt(req.body.classid, 10) == 'number')){
     fs.exists("./classes/"+req.body.classid+".txt", function (exists) {
     if (!exists) {
@@ -215,11 +317,11 @@ app.post('/send', function(req, res) {
          if (err) {
              throw err;
          }
-         fs.writeFile("./classes/"+req.body.classid+".txt", getDateTime()+":   "+"\n"+req.body.hw+"\n"+"\n"+data, function(err) {
+         fs.writeFile("./classes/"+req.body.classid+".txt", getDateTime()+", Submitted by: "+req.cookies.username+":   "+"\n"+req.body.hw+"\n"+"\n"+data, function(err) {
             if(err) {
                  return console.log(err);
             }
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"SEND SUCCESS by: "+req.cookies.username, function(err) {}); });
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"SEND SUCCESS by: "+req.cookies.username, function(err) {}); });
             console.log("The file was saved!");
          });
       });
@@ -237,7 +339,7 @@ app.post('/send', function(req, res) {
 });
 
 app.post('/gethw', function(req, res) {  
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"GET ATTEMPT by: "+req.cookies.username, function(err) {}); });
+  fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"GET ATTEMPT by: "+req.cookies.username, function(err) {}); });
   if((typeof parseInt(req.body.getid, 10) == 'number')){
     fs.exists("./classes/"+req.body.getid+".txt", function (exists) {
     if (!exists) {
@@ -254,8 +356,8 @@ app.post('/gethw', function(req, res) {
          if (err) {
              throw err;
          }
-    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+"GET SUCCESS by: "+req.cookies.username, function(err) {}); });
-         return res.render('./', {title: 'RolzPro AAW', hwboxmessage: data, tellclass: req.body.getid, showhw:'true'});
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"GET SUCCESS by: "+req.cookies.username, function(err) {}); });
+         return res.render('index', {title: 'RolzPro AAW', hwboxmessage: data, tellclass: req.body.getid, showhw:'true', username: req.cookies.username});
          return res.end();
       });
     }
@@ -266,7 +368,6 @@ app.post('/gethw', function(req, res) {
         { title: 'RolzPro AAW',
          errormessage: "ClassID Not A Number"})
   }
-
 });
 
 app.listen((process.env.PORT || 5000), function () {

@@ -8,30 +8,21 @@ html.mdc-typography
 
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__primary
-        divc.mdc-typography--heading2 
-          |Welcome to RolzPro AAW!
-          |Login below to see the latest HW for any of your classes.
-          |If you don't have an account, see below to create one.
-    
+        divc.mdc-typography--heading2
+          |Good news! RolzPro AAW is switching account authentication hash to SHA512! What does this mean for you? SHA512 will secure and hash your passwords more safely than our previous standard, and it is the leading and proven most secure hash used today by all websites and account password systems. To take advantage of the SHA512 hashing, you must reeenter your password or change your password, to allow us to generate a new hash. This needs to be done by the user, because only you know your password, and an unsafe, unhashed version of your password is NOT stored in our databases or our knowledge. For more information on hashing and the SHA512 hash method, check these sites out:
+          |   https://en.wikipedia.org/wiki/SHA-3
+          |   https://www.wired.com/2016/06/hacker-lexicon-password-hashing/
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__primary
-        form#get-form(action='/confirmlogin', method='POST')
+        form#get-form(action='/confirmfromlegacypass', method='POST')
           div
-            h1.mdc-card__title.mdc-card__title--large Username:
             .mdc-form-field
               .mdc-textfield(data-mdc-auto-init='MDCTextfield')
-                input#getid.mdc-textfield__input(type='text', name='username')
+                input#getid.mdc-textfield__input(type='password', name='pass')
                 label.mdc-textfield__label(for='getid')
-                  | Username
-          div
-            h1.mdc-card__title.mdc-card__title--large Password:
-            .mdc-form-field
-              .mdc-textfield(data-mdc-auto-init='MDCTextfield')
-                input#getid.mdc-textfield__input(type='password', name='password')
-                label.mdc-textfield__label(for='getid')
-                  | Password
+                  | Confirm Password
           button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
-            | Login
+            | Submit and Continue to RolzPro AAW
 
     aside#mdc-dialog-with-list.mdc-dialog(style='visibility:hidden', role='alertdialog', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
       .mdc-dialog__surface
@@ -40,19 +31,11 @@ html.mdc-typography
         footer.mdc-dialog__footer
           button.mdc-button.mdc-dialog__footer__button.mdc-dialog__footer__button--cancel(type='button') Got It!
       .mdc-dialog__backdrop
-
-    .mdc-card.getcard(style="max-width:500px")
-      section.mdc-card__actions
-        form#get-form(action='/createaccount', method='GET')
-          div
-            .mdc-form-field
-              button.mdc-button.mdc-button.mdc-button--primary.mdc-button--raised.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
-                |Create Account
     
     .mdc-card.getcard(style="max-width:500px")
       section.mdc-card__primary
         divc.mdc-typography--heading2 
-          |If you forgot your password, or are having any trouble with your account, please contact RolzPro technical support directly at cwu159@gmail.com. Thanks!
+          |For more info regarding our new 'Users FIRST' policy, please contact RolzPro technical support directly at cwu159@gmail.com.
 
   script(src='https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js')
   script.
