@@ -23,6 +23,12 @@ html.mdc-typography
           button.mdc-button.mdc-button--raised.mdc-button--primary.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
             | Submit and Continue to RolzPro AAW
 
+    .mdc-card.getcard(style="max-width:500px")
+      section.mdc-card__primary
+        form#get-form(action='/skipemail', method='POST')
+          button.mdc-button.mdc-button--raised.mdc-button--accent.mdc-ripple-surface(type='submit', data-mdc-auto-init='MDCRipple')
+            | SKIP PROCESS AND OPT OUT
+
     aside#mdc-dialog-with-list.mdc-dialog(style='visibility:hidden', role='alertdialog', aria-labelledby='mdc-dialog-with-list-label', aria-describedby='mdc-dialog-with-list-description')
       .mdc-dialog__surface
         header.mdc-dialog__header

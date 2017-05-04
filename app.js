@@ -111,6 +111,24 @@ app.post('/confirmfromlegacypass', function (req, res) {
     }
 })
 
+app.post('/skipemail', function (req, res) {
+    fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"EMAIL SKIP by: "+req.cookies.username, function(err) {}); });
+          fs.exists("./emails/"+req.cookies.username+".txt", function (exists) {
+          if (!exists) {
+             fs.closeSync(fs.openSync("./emails/"+req.cookies.username+".txt", 'w'));
+             fs.writeFile("./emails/"+req.cookies.username+".txt", "DECLINED", function(err) {
+              if(err) {
+              }
+             fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"SKIP SUCCESS by: "+req.cookies.username, function(err) {}); });});
+             goodcookie(true, req.cookies.username, req.cookies.password, 'index', res)
+          }
+          else{
+              fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"STRANGE EMAIL SKIP by: "+req.cookies.username, function(err) {}); });
+              goodcookie(true, req.cookies.username, req.cookies.password, 'index', res)
+          }
+        });
+})
+
 app.post('/confirmemail', function (req, res) {
     fs.readFile("logs.txt", function read(err, data) {    fs.writeFile("logs.txt", data+"\n"+getDateTime()+":  "+"EMAIL ATTEMPT by: "+req.cookies.username, function(err) {}); });
     if(req.body.email!=""&&req.body.email!=null)
